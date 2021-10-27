@@ -13,6 +13,7 @@ require('./config/dbconfig')();
 
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/products', productRoute);
+app.use('/api/v1/users', userRoute);
 
 app.all('*', (req, res, next) => {
   return next(new AppError(404, 'This route is not yet defined'));
