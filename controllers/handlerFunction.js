@@ -12,9 +12,11 @@ exports.createDocument = (Model) =>
     });
   });
 
-exports.getAllDocuments = (Model) =>
+exports.getAllDocuments = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    const docs = await Model.find();
+    let query = Model.find();
+    if (popOptions) query = query.populate(popOptions);
+    const docs = await query;
     res.status(200).json({
       status: 'success',
       data: {
@@ -41,9 +43,11 @@ exports.updateDocument = (Model) =>
     });
   });
 
-exports.getDocument = (Model) =>
+exports.getDocument = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findById(req.params.id);
+    let query = Model.findById(req.params.id);
+    if (popOptions) query = query.populate(popOptions);
+    const doc = await query;
     if (!doc)
       return next(new AppError(404, 'There is no document found with that ID'));
 

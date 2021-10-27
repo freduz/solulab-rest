@@ -12,6 +12,7 @@ dotenv.config({});
 require('./config/dbconfig')();
 
 app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/products', productRoute);
 
 app.all('*', (req, res, next) => {
   return next(new AppError(404, 'This route is not yet defined'));
