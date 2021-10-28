@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const ApiFeatures = require('../utils/apiFeatures');
 
 exports.createDocument = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -14,9 +15,14 @@ exports.createDocument = (Model) =>
 
 exports.getAllDocuments = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.find();
-    if (popOptions) query = query.populate(popOptions);
-    const docs = await query;
+    let feaures = new ApiFeatures(Model.find(), req.query)
+      .fliter()
+      .sort()
+      .fields()
+      .paginate();
+
+    if (popOptions) feaures.query = feaures.query.populate(popOptions);
+    const docs = await feaures.query;
     res.status(200).json({
       status: 'success',
       data: {

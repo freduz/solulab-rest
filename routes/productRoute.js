@@ -7,7 +7,7 @@ router
   .route('/')
   .post(
     authController.hasAuthenticated,
-    authController.hasModuleAccess('admin'),
+    // authController.hasModuleAccess('admin'),
     productController.createProduct
   )
   .get(productController.getAllProducts);
